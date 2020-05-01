@@ -1,0 +1,12 @@
+INC_FLAGS = -I./stb
+#DEF_FLAGS = -DUSE_GLFW
+DEF_FLAGS = -DUSE_XCB
+#DEF_FLAGS = -DUSE_XLIB
+#DEF_FLAGS = -DUSE_XMIX
+
+#LIBS = -lvulkan -lxcb
+#LIBS = -lvulkan -lX11
+LIBS = -lvulkan -lxcb -lX11-xcb -lX11 -lglfw
+
+EXEC = helloAA
+
