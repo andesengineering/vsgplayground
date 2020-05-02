@@ -10,19 +10,7 @@ WindowAdapter::WindowAdapter<Display *,unsigned long>( vsg::ref_ptr<vsg::WindowT
 vsg::Window(traits, nullptr)
 {
     _nativeAdapter = new XlibNativeAdapter( dpy, win );
-
-    VkSurfaceKHR surf;
-    _nativeAdapter->createVulkanSurface( _instance->getInstance(), surf );
-
-    _surface = new vsg::Surface( surf, _instance );
-
-    initaliseDevice();
-
-    uint32_t width = 0;
-    uint32_t height = 0;
-    _nativeAdapter->getFramebufferSize( width, height );
-
-    resize();
+    _init();
 }
 
 // Xcb
@@ -30,8 +18,13 @@ template <>
 WindowAdapter::WindowAdapter<xcb_connection_t *,xcb_window_t>( vsg::ref_ptr<vsg::WindowTraits> traits, xcb_connection_t* connection, xcb_window_t window):
 vsg::Window(traits, nullptr)
 {
-    VkSurfaceKHR surf;
     _nativeAdapter = new XcbNativeAdapter( connection, window );
+    _init();
+}
+
+void WindowAdapter::_init()
+{
+    VkSurfaceKHR surf;
     _nativeAdapter->createVulkanSurface( _instance->getInstance(), surf );
 
     _surface = new vsg::Surface( surf, _instance );

@@ -26,6 +26,8 @@ class WindowAdapter: public vsg::Window
         WindowAdapter( vsg::ref_ptr<vsg::WindowTraits> traits, Args... );
         ~WindowAdapter() {}
 
+        void _init();
+
     public:
         class NativeAdapter: public vsg::Object
         {
