@@ -38,9 +38,9 @@ class WindowAdapter: public vsg::Window
 
                 virtual bool valid() { return false; }
                 virtual void createVulkanSurface( VkInstance instance, VkSurfaceKHR &surface ) {}
-                virtual bool pollEvents( vsg::Events & ) {}
+                virtual bool pollEvents( vsg::Events & ) {return false;}
                 virtual bool resized() { return false; }
-                virtual bool getFramebufferSize( uint32_t &width, uint32_t &height ) { width = height = 0; }
+                virtual bool getFramebufferSize( uint32_t &width, uint32_t &height ) { width = height = 0; return false; }
 
             protected:
                 NativeAdapter() {}

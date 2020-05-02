@@ -61,4 +61,5 @@ bool XcbNativeAdapter::getFramebufferSize( uint32_t &width, uint32_t &height )
         }
         free(geometry_reply);
     }
+    return true;
 }
