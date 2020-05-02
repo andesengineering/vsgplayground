@@ -35,7 +35,7 @@ XlibWindow::XlibWindow( uint32_t width, uint32_t height )
     windowAttributes.colormap = colormap;
     windowAttributes.background_pixel = 0xFFFFFFFF;
     windowAttributes.border_pixel = 0;
-    windowAttributes.event_mask = KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask;
+    windowAttributes.event_mask = emask; //KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask;
 
     window = XCreateWindow( dpy, RootWindow(dpy, vInfoTemplate.screen), 0, 0,
                 width, height, 0, visualInfo->depth, InputOutput,
