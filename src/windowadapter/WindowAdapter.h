@@ -1,5 +1,5 @@
-#ifndef VSG_WINDOW_ADAPTER_DEF
-#define VSG_WINDOW_ADAPTER_DEF
+#ifndef WINDOW_ADAPTER_DEF
+#define WINDOW_ADAPTER_DEF
 
 #include <vsg/viewer/Window.h>
 
@@ -11,9 +11,9 @@ class WindowAdapter: public vsg::Window
         WindowAdapter &operator = (const WindowAdapter &) = delete;
 
         template <typename... Args>
-            static vsg::ref_ptr<vsg::Window> create( vsg::ref_ptr<vsg::WindowTraits> traits, Args&&... args )
+            static vsg::ref_ptr<vsg::Window> create( vsg::ref_ptr<vsg::WindowTraits> traits, vsg::AllocationCallbacks* allocator, Args&&... args )
         {
-            return vsg::ref_ptr<vsg::Window>( new WindowAdapter( traits, args... ) );
+            return vsg::ref_ptr<vsg::Window>( new WindowAdapter( traits, allocator, args... ) );
         }
 
         bool valid() const override;
@@ -23,7 +23,7 @@ class WindowAdapter: public vsg::Window
 
     protected:
         template <typename... Args>
-        WindowAdapter( vsg::ref_ptr<vsg::WindowTraits> traits, Args... );
+        WindowAdapter( vsg::ref_ptr<vsg::WindowTraits> traits, vsg::AllocationCallbacks* allocator, Args... );
         ~WindowAdapter() {}
 
         void _init();

@@ -1,10 +1,10 @@
 set(SOURCES
     main.cpp
+    NativeAdapterXcb.cpp
+    NativeAdapterXlib.cpp
     WindowAdapter.cpp
-    XCBNativeAdapter.cpp
-    XCBWindow.cpp
-    XlibNativeAdapter.cpp
-    XlibWindow.cpp
+    WindowXcb.cpp
+    WindowXlib.cpp
    )
 
 

@@ -2,17 +2,15 @@
 
 #include "WindowAdapter.h"
 
-
-
 #if defined(USE_VSG)
 
 #elif defined(USE_XCB)
 
-#include "XCBWindow.h"
+#  include "WindowXcb.h"
 
 #elif defined(USE_XLIB)
 
-#include "XlibWindow.h"
+#  include "WindowXlib.h"
 
 #endif
 
@@ -38,19 +36,25 @@ int main( int argc, char **argv )
 
     auto viewer = vsg::Viewer::create();
 
+    windowTraits->width = 800;
+    windowTraits->height = 600;
+
 #if defined(USE_VSG)
 
      vsg::ref_ptr<vsg::Window> window(vsg::Window::create(windowTraits));
+     std::cout << "Using VSG's internal window" << std::endl;
 
 #elif defined(USE_XCB)
 
-    vsg::ref_ptr<XCBWindow> xcbwindow( new XCBWindow( 800, 600 ) );
-    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, xcbwindow->connection, xcbwindow->window ) );
+    vsg::ref_ptr<WindowXcb> windowXcb( new WindowXcb( windowTraits->width, windowTraits->height ) );
+    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, nullptr, windowXcb->connection, windowXcb->window ) );
+    std::cout << "Using xcb window created external to vsg" << std::endl;
 
 #elif defined(USE_XLIB)
 
-    vsg::ref_ptr<XlibWindow> xlibwindow( new XlibWindow( 800, 600 ) );
-    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, xlibwindow->dpy, xlibwindow->window ) );
+    vsg::ref_ptr<WindowXlib> windowXlib( new WindowXlib( windowTraits->width, windowTraits->height ) );
+    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, nullptr, windowXlib->dpy, windowXlib->window ) );
+    std::cout << "Using xlib window created external to vsg" << std::endl;
 
 #endif
 

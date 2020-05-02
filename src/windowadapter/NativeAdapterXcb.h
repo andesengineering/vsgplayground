@@ -1,22 +1,24 @@
-#ifndef XCB_NATIVE_ADAPTER_DEF
-#define XCB_NATIVE_ADAPTER_DEF
+#ifndef NATIVE_ADAPTER_XCB_DEF
+#define NATIVE_ADAPTER_XCB_DEF
 
 #include "WindowAdapter.h"
 #include "macros.h"
 #include <xcb/xcb.h>
 
-class XcbNativeAdapter: public WindowAdapter::NativeAdapter
+class NativeAdapterXcb: public WindowAdapter::NativeAdapter
 {
     public:
-        NO_DEFAULT_CONSTRUCTOR(XcbNativeAdapter)
+        NO_DEFAULT_CONSTRUCTOR(NativeAdapterXcb)
 
-        XcbNativeAdapter( xcb_connection_t* connection, xcb_window_t window );
+        NativeAdapterXcb( xcb_connection_t* connection, xcb_window_t window );
 
         bool valid() override;
         void createVulkanSurface( VkInstance instance, VkSurfaceKHR &surface ) override;
         bool pollEvents( vsg::Events & ) override;
         bool resized() override;
         bool getFramebufferSize( uint32_t &width, uint32_t &height ) override;
+
+        static vsg::Names getRequiredExtensions();
 
     private:
         xcb_connection_t *_connection;

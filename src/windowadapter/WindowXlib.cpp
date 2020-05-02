@@ -1,10 +1,10 @@
-#include "XlibWindow.h"
+#include "WindowXlib.h"
 
 #include <X11/Xutil.h>
 
 #ifdef USE_XLIB
 
-XlibWindow::XlibWindow( uint32_t width, uint32_t height )
+WindowXlib::WindowXlib( uint32_t width, uint32_t height )
 {
     dpy = XOpenDisplay("");
 
@@ -48,7 +48,7 @@ XlibWindow::XlibWindow( uint32_t width, uint32_t height )
     XSync(dpy,0);
 }
 
-XlibWindow::~XlibWindow()
+WindowXlib::~WindowXlib()
 {
     if( dpy != nullptr)
     {

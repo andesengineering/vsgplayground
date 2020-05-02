@@ -1,10 +1,12 @@
 EXEC = winadapt
 LIBS = -lvsgd -lvulkan -lxcb -lpthread  
 
-DEF_FLAGS := -DUSE_XCB
-LIBS += -lxcb
-#DEF_FLAGS := -DUSE_XLIB
+#DEF_FLAGS := -DUSE_XCB
+#LIBS += -lxcb -lX11
+DEF_FLAGS := -DUSE_XLIB
 LIBS += -lX11
+#DEF_FLAGS := -DUSE_VSG
+#LIBS += -lxcb -lX11
 
 BUILD_MODE := debug
 
