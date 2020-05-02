@@ -1,5 +1,5 @@
-#ifndef VSG_WINDOW_ADAPTER_DEF
-#define VSG_WINDOW_ADAPTER_DEF
+#ifndef WINDOW_ADAPTER_DEF
+#define WINDOW_ADAPTER_DEF
 
 #include <vsg/viewer/Window.h>
 

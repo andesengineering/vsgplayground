@@ -1,18 +1,26 @@
-#include "XCBNativeAdapter.h"
+#include "NativeAdapterXcb.h"
 
 #include <vulkan/vulkan_xcb.h>
 
-XcbNativeAdapter::XcbNativeAdapter( xcb_connection_t* connection, xcb_window_t window ):
+template <>
+WindowAdapter::WindowAdapter<xcb_connection_t *,xcb_window_t>( vsg::ref_ptr<vsg::WindowTraits> traits, xcb_connection_t* connection, xcb_window_t window):
+    vsg::Window(traits, nullptr)
+{
+    _nativeAdapter = new NativeAdapterXcb( connection, window );
+    _init();
+}
+
+NativeAdapterXcb::NativeAdapterXcb( xcb_connection_t* connection, xcb_window_t window ):
     _connection(connection)
   , _window(window)
 {}
 
-bool XcbNativeAdapter::valid()
+bool NativeAdapterXcb::valid()
 {
     return _connection != nullptr && _window != 0;
 }
 
-void XcbNativeAdapter::createVulkanSurface( VkInstance instance, VkSurfaceKHR &surface )
+void NativeAdapterXcb::createVulkanSurface( VkInstance instance, VkSurfaceKHR &surface )
 {
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo{};
     surfaceCreateInfo.sType      = VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR;
@@ -21,17 +29,17 @@ void XcbNativeAdapter::createVulkanSurface( VkInstance instance, VkSurfaceKHR &s
     vkCreateXcbSurfaceKHR( instance, &surfaceCreateInfo, nullptr, &surface);
 }
 
-bool XcbNativeAdapter::pollEvents( vsg::Events & )
+bool NativeAdapterXcb::pollEvents( vsg::Events & )
 {
     return false; 
 }
 
-bool XcbNativeAdapter::resized()
+bool NativeAdapterXcb::resized()
 {
     return false;
 }
 
-bool XcbNativeAdapter::getFramebufferSize( uint32_t &width, uint32_t &height )
+bool NativeAdapterXcb::getFramebufferSize( uint32_t &width, uint32_t &height )
 {
     xcb_get_geometry_cookie_t geometry_cookie = xcb_get_geometry(_connection, _window);
     xcb_query_tree_cookie_t tree_cookie = xcb_query_tree(_connection, _window);

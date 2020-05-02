@@ -1,8 +1,8 @@
-#include "XCBWindow.h"
+#include "WindowXcb.h"
 
 #ifdef USE_XCB
 
-XCBWindow::XCBWindow( uint32_t width, uint32_t height )
+WindowXcb::WindowXcb( uint32_t width, uint32_t height )
 {
     int screenNum = 0;
     connection = xcb_connect(nullptr, &screenNum);
@@ -57,7 +57,7 @@ XCBWindow::XCBWindow( uint32_t width, uint32_t height )
   	xcb_flush(connection);
 }
 
-XCBWindow::~XCBWindow()
+WindowXcb::~WindowXcb()
 {
     if( connection != nullptr)
     {

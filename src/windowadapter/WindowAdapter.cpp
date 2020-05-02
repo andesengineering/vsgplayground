@@ -1,26 +1,6 @@
 #include "WindowAdapter.h"
-#include "XCBNativeAdapter.h"
-#include "XlibNativeAdapter.h"
 #include <xcb/xcb.h>
 #include <X11/Xlib.h>
-
-// Xlib
-template <>
-WindowAdapter::WindowAdapter<Display *,unsigned long>( vsg::ref_ptr<vsg::WindowTraits> traits, Display *dpy, unsigned long win ):
-vsg::Window(traits, nullptr)
-{
-    _nativeAdapter = new XlibNativeAdapter( dpy, win );
-    _init();
-}
-
-// Xcb
-template <>
-WindowAdapter::WindowAdapter<xcb_connection_t *,xcb_window_t>( vsg::ref_ptr<vsg::WindowTraits> traits, xcb_connection_t* connection, xcb_window_t window):
-vsg::Window(traits, nullptr)
-{
-    _nativeAdapter = new XcbNativeAdapter( connection, window );
-    _init();
-}
 
 void WindowAdapter::_init()
 {

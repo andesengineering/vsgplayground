@@ -8,11 +8,11 @@
 
 #elif defined(USE_XCB)
 
-#include "XCBWindow.h"
+#include "WindowXcb.h"
 
 #elif defined(USE_XLIB)
 
-#include "XlibWindow.h"
+#include "WindowXlib.h"
 
 #endif
 
@@ -20,6 +20,8 @@
 int main( int argc, char **argv )
 {
     auto windowTraits = vsg::WindowTraits::create();
+    windowTraits->width = 800;
+    windowTraits->height = 600;
 
     if( std::getenv("VSG_FILE_PATH") == nullptr )
     {
@@ -44,13 +46,13 @@ int main( int argc, char **argv )
 
 #elif defined(USE_XCB)
 
-    vsg::ref_ptr<XCBWindow> xcbwindow( new XCBWindow( 800, 600 ) );
-    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, xcbwindow->connection, xcbwindow->window ) );
+    vsg::ref_ptr<WindowXcb> windowXcb( new WindowXcb( windowTraits->width, windowTraits->height ) );
+    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, windowXcb->connection, windowXcb->window ) );
 
 #elif defined(USE_XLIB)
 
-    vsg::ref_ptr<XlibWindow> xlibwindow( new XlibWindow( 800, 600 ) );
-    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, xlibwindow->dpy, xlibwindow->window ) );
+    vsg::ref_ptr<WindowXlib> windowXlib( new WindowXlib( windowTraits->width, windowTraits->height ) );
+    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, windowXlib->dpy, windowXlib->window ) );
 
 #endif
 
