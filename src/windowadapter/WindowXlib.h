@@ -1,5 +1,4 @@
-#ifndef WINDOW_XLIB_DEF
-#define WINDOW_XLIB_DEF
+#pragma once
 
 #include <X11/Xlib.h>
 #include <vsg/core/Object.h>
@@ -13,5 +12,3 @@ struct WindowXlib: public vsg::Object
     WindowXlib(uint32_t width, uint32_t height);
     ~WindowXlib();
 };
-
-#endif

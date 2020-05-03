@@ -1,35 +1,26 @@
 #include <vsg/all.h>
 
 #include "WindowAdapter.h"
-
-
-
-#if defined(USE_VSG)
-
-#elif defined(USE_XCB)
-
 #include "WindowXcb.h"
-
-#elif defined(USE_XLIB)
-
 #include "WindowXlib.h"
-
-#endif
 
 
 int main( int argc, char **argv )
 {
+    vsg::CommandLine arguments(&argc, argv);
+
     auto windowTraits = vsg::WindowTraits::create();
     windowTraits->width = 800;
     windowTraits->height = 600;
 
-    if( std::getenv("VSG_FILE_PATH") == nullptr )
+    vsg::Paths searchPaths = vsg::getEnvPaths("VSG_FILE_PATH");
+    vsg::Path teapotFile = vsg::findFile("models/teapot.vsgt", searchPaths);
+    if (teapotFile.empty())
     {
-        std::cerr << "Please set VSG_FILE_PATH to the vsgExamples data directory" << std::endl;
+        std::cerr << "Cannot find file," << std::endl;
         return 1;
     }
 
-    std::string teapotFile = std::string(std::getenv("VSG_FILE_PATH")) + "/models/teapot.vsgt";
     auto options = vsg::Options::create();
     vsg::ref_ptr<vsg::Node> vsg_scene = vsg::read_cast<vsg::Node>( teapotFile, options );
     if( !vsg_scene )
@@ -40,27 +31,32 @@ int main( int argc, char **argv )
 
     auto viewer = vsg::Viewer::create();
 
-#if defined(USE_VSG)
+    vsg::ref_ptr<vsg::Window> window;
 
-     vsg::ref_ptr<vsg::Window> window(vsg::Window::create(windowTraits));
-
-#elif defined(USE_XCB)
-
-    vsg::ref_ptr<WindowXcb> windowXcb( new WindowXcb( windowTraits->width, windowTraits->height ) );
-    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, windowXcb->connection, windowXcb->window ) );
-
-#elif defined(USE_XLIB)
-
-    vsg::ref_ptr<WindowXlib> windowXlib( new WindowXlib( windowTraits->width, windowTraits->height ) );
-    vsg::ref_ptr<vsg::Window> window( WindowAdapter::create( windowTraits, windowXlib->dpy, windowXlib->window ) );
-
-#endif
+    if (arguments.read("--vsg"))
+    {
+        window = vsg::Window::create(windowTraits);
+        std::cout<<"Create Widnow insg VSG "<<window<<std::endl;
+    }
+    else if (arguments.read("--xcb"))
+    {
+        vsg::ref_ptr<WindowXcb> windowXcb( new WindowXcb( windowTraits->width, windowTraits->height ) );
+        window = WindowAdapter::create( windowTraits, windowXcb->connection, windowXcb->window );
+        std::cout<<"Create Widnow insg XCB "<<window<<std::endl;
+    }
+    else
+    {
+        vsg::ref_ptr<WindowXlib> windowXlib( new WindowXlib( windowTraits->width, windowTraits->height ) );
+        window = WindowAdapter::create( windowTraits, windowXlib->dpy, windowXlib->window);
+        std::cout<<"Create Widnow insg Xlib "<<window<<std::endl;
+    }
 
     if (!window)
     {
         std::cout<<"Could not create windows."<<std::endl;
         return 1;
     }
+
     viewer->addWindow(window);
 
     vsg::ComputeBounds computeBounds;
@@ -78,8 +74,7 @@ int main( int argc, char **argv )
     viewer->addEventHandler(vsg::CloseHandler::create(viewer));
 
     auto commandGraph = vsg::createCommandGraphForView(window, camera, vsg_scene);
-    viewer->assignRecordAndSubmitTaskAndPresentation({commandGraph}
-    );
+    viewer->assignRecordAndSubmitTaskAndPresentation({commandGraph});
 
     viewer->compile();
 

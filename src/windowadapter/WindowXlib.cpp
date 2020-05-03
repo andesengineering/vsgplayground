@@ -2,8 +2,6 @@
 
 #include <X11/Xutil.h>
 
-#ifdef USE_XLIB
-
 WindowXlib::WindowXlib( uint32_t width, uint32_t height )
 {
     dpy = XOpenDisplay("");
@@ -58,5 +56,3 @@ WindowXlib::~WindowXlib()
         XCloseDisplay(dpy);
     }
 }
-
-#endif

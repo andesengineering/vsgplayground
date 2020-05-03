@@ -1,7 +1,5 @@
 #include "WindowXcb.h"
 
-#ifdef USE_XCB
-
 WindowXcb::WindowXcb( uint32_t width, uint32_t height )
 {
     int screenNum = 0;
@@ -67,5 +65,3 @@ WindowXcb::~WindowXcb()
         xcb_disconnect(connection);
     }
 }
-
-#endif
