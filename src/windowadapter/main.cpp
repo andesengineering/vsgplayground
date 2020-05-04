@@ -38,25 +38,19 @@ int main( int argc, char **argv )
     if (arguments.read("--vsg"))
     {
         window = vsg::Window::create(windowTraits);
-        std::cout<<"Create Widnow insg VSG "<<window<<std::endl;
+        std::cout<<"Create Widnow in VSG "<<window<<std::endl;
     }
     else if (arguments.read("--xcb"))
     {
-        windowTraits->instanceExtensionNames.emplace_back("VK_KHR_surface");
-        windowTraits->instanceExtensionNames.emplace_back("VK_KHR_xcb_surface");
-
         windowXcb = new WindowXcb( windowTraits->width, windowTraits->height );
-        window = WindowAdapter::create( windowTraits, &windowXcb->connection, windowXcb->window );
-        std::cout<<"Create Widnow insg XCB "<<window<<std::endl;
+        window = WindowAdapter::create( vsg::assignSurfaceExtension(windowTraits, "VK_KHR_xcb_surface"), &windowXcb->connection, windowXcb->window );
+        std::cout<<"Create Widnow in XCB "<<window<<std::endl;
     }
     else
     {
-        windowTraits->instanceExtensionNames.emplace_back("VK_KHR_surface");
-        windowTraits->instanceExtensionNames.emplace_back("VK_KHR_xlib_surface");
-
         windowXlib = new WindowXlib( windowTraits->width, windowTraits->height );
-        window = WindowAdapter::create( windowTraits, &windowXlib->dpy, windowXlib->window);
-        std::cout<<"Create Widnow insg Xlib "<<window<<std::endl;
+        window = WindowAdapter::create( vsg::assignSurfaceExtension(windowTraits, "VK_KHR_xlib_surface"), &windowXlib->dpy, windowXlib->window);
+        std::cout<<"Create Widnow in Xlib "<<window<<std::endl;
     }
 
     if (!window)
