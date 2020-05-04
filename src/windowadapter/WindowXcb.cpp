@@ -63,5 +63,8 @@ WindowXcb::~WindowXcb()
             xcb_destroy_window(connection, window);
         xcb_flush(connection);
         xcb_disconnect(connection);
+
+        connection = nullptr;
+        window = 0;
     }
 }

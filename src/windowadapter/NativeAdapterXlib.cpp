@@ -4,21 +4,29 @@
 
 // Xlib
 template <>
-WindowAdapter::WindowAdapter<Display *,unsigned long>( vsg::ref_ptr<vsg::WindowTraits> traits, Display *dpy, unsigned long win ):
+WindowAdapter::WindowAdapter<Display **,unsigned long>( vsg::ref_ptr<vsg::WindowTraits> traits, Display **dpy, unsigned long win ):
 vsg::Window(traits, nullptr)
 {
-    _nativeAdapter = new NativeAdapterXlib( dpy, win );
+    _nativeAdapter = new NativeAdapterXlib( *dpy, win );
     _init();
 }
 
-NativeAdapterXlib::NativeAdapterXlib( Display *_dpy, Window _win ):
+NativeAdapterXlib::NativeAdapterXlib( Display *&_dpy, Window _win ):
     dpy(_dpy)
   , window(_win)
 {}
 
 bool NativeAdapterXlib::valid()
 {
-    return dpy != nullptr && window != 0;
+    if( dpy == nullptr )
+        return false;
+
+    /* * this is called a lot, so could be very expensive
+    XWindowAttributes watt;
+    Status s = XGetWindowAttributes( dpy, window, &watt );
+    return s == True;
+    */
+    return true;
 }
 
 void NativeAdapterXlib::createVulkanSurface( VkInstance instance, VkSurfaceKHR &surface )

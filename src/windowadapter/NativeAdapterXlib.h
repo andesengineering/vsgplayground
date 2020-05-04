@@ -10,7 +10,7 @@ class NativeAdapterXlib: public WindowAdapter::NativeAdapter
     public:
         NO_DEFAULT_CONSTRUCTOR(NativeAdapterXlib)
 
-        NativeAdapterXlib( Display *, unsigned long );
+        NativeAdapterXlib( Display *&, unsigned long );
 
         bool valid() override;
         void createVulkanSurface( VkInstance instance, VkSurfaceKHR &surface ) override;
@@ -19,7 +19,7 @@ class NativeAdapterXlib: public WindowAdapter::NativeAdapter
         bool getFramebufferSize( uint32_t &width, uint32_t &height ) override;
 
     private:
-        Display *dpy = nullptr;
+        Display *&dpy;
         unsigned long window;
 };
 

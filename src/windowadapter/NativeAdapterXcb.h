@@ -10,7 +10,7 @@ class NativeAdapterXcb: public WindowAdapter::NativeAdapter
     public:
         NO_DEFAULT_CONSTRUCTOR(NativeAdapterXcb)
 
-        NativeAdapterXcb( xcb_connection_t* connection, xcb_window_t window );
+        NativeAdapterXcb( xcb_connection_t*& connection, xcb_window_t window );
 
         bool valid() override;
         void createVulkanSurface( VkInstance instance, VkSurfaceKHR &surface ) override;
@@ -19,7 +19,7 @@ class NativeAdapterXcb: public WindowAdapter::NativeAdapter
         bool getFramebufferSize( uint32_t &width, uint32_t &height ) override;
 
     private:
-        xcb_connection_t *_connection;
+        xcb_connection_t *&_connection;
         xcb_window_t _window;
 };
 

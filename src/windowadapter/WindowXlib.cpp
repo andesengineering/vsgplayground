@@ -54,5 +54,7 @@ WindowXlib::~WindowXlib()
             XDestroyWindow(dpy, window );
         XFlush(dpy);
         XCloseDisplay(dpy);
+        dpy = nullptr;
+        window = 0;
     }
 }

@@ -3,14 +3,14 @@
 #include <vulkan/vulkan_xcb.h>
 
 template <>
-WindowAdapter::WindowAdapter<xcb_connection_t *,xcb_window_t>( vsg::ref_ptr<vsg::WindowTraits> traits, xcb_connection_t* connection, xcb_window_t window):
+WindowAdapter::WindowAdapter<xcb_connection_t **,xcb_window_t>( vsg::ref_ptr<vsg::WindowTraits> traits, xcb_connection_t** connection, xcb_window_t window):
     vsg::Window(traits, nullptr)
 {
-    _nativeAdapter = new NativeAdapterXcb( connection, window );
+    _nativeAdapter = new NativeAdapterXcb( *connection, window );
     _init();
 }
 
-NativeAdapterXcb::NativeAdapterXcb( xcb_connection_t* connection, xcb_window_t window ):
+NativeAdapterXcb::NativeAdapterXcb( xcb_connection_t*& connection, xcb_window_t window ):
     _connection(connection)
   , _window(window)
 {}
