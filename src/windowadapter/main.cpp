@@ -38,7 +38,7 @@ int main( int argc, char **argv )
     if (arguments.read("--vsg"))
     {
         window = vsg::Window::create(windowTraits);
-        std::cout<<"Create Widnow insg VSG "<<window<<std::endl;
+        std::cout<<"Create Widnow in VSG "<<window<<std::endl;
     }
     else if (arguments.read("--xcb"))
     {
@@ -47,7 +47,7 @@ int main( int argc, char **argv )
 
         windowXcb = new WindowXcb( windowTraits->width, windowTraits->height );
         window = WindowAdapter::create( windowTraits, windowXcb->connection, windowXcb->window );
-        std::cout<<"Create Widnow insg XCB "<<window<<std::endl;
+        std::cout<<"Create Widnow in XCB "<<window<<std::endl;
     }
     else
     {
@@ -56,7 +56,7 @@ int main( int argc, char **argv )
 
         windowXlib = new WindowXlib( windowTraits->width, windowTraits->height );
         window = WindowAdapter::create( windowTraits, windowXlib->dpy, windowXlib->window);
-        std::cout<<"Create Widnow insg Xlib "<<window<<std::endl;
+        std::cout<<"Create Widnow in Xlib "<<window<<std::endl;
     }
 
     if (!window)
